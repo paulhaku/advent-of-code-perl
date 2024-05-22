@@ -1,13 +1,10 @@
 #!/usr/bin/perl
 use strict;
 use warnings FATAL => 'all';
+use autodie;
 
-my $f = "input.txt";
-my $result = open my $fh, "<", $f;
-
-if (!$result) {
-    die "Couldn't open $f";
-}
+my $filename = "input.txt";
+open my $fh, "<", $filename;
 
 my $sum = 0;
 while (!eof $fh) {
