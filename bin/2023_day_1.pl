@@ -2,8 +2,10 @@
 use strict;
 use warnings FATAL => 'all';
 use autodie;
+use File::Spec;
 
-my $filename = "input.txt";
+my $file_dir = File::Spec->catdir('input');
+my $filename = File::Spec->catfile($file_dir, '2023_day1.txt');
 open my $fh, "<", $filename;
 
 my $sum = 0;

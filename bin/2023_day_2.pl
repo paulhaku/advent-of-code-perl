@@ -2,6 +2,7 @@
 use strict;
 use warnings;
 use autodie;
+use File::Spec;
 
 sub find_digits {
     my ($line, $digit_values) = @_;
@@ -32,7 +33,8 @@ sub find_digits {
     return ($first_digit, $last_digit);
 }
 
-my $filename = 'input.txt';
+my $file_dir = File::Spec->catdir('input');
+my $filename = File::Spec->catfile($file_dir, '2023_day1.txt');
 open my $fh, '<', $filename;
 
 my %digit_values = (
