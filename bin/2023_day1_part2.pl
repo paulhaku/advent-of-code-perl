@@ -4,10 +4,18 @@ use warnings;
 use autodie;
 use File::Spec;
 
+# Word representations
+my %digit_values = (
+    one => 1, two => 2, three => 3, four => 4, five => 5, six => 6, seven => 7, eight => 8, nine => 9
+);
+# Numerical representations
+$digit_values{$_} = $_ for 1..9;
+
 sub find_digits {
     my ($line, $digit_values) = @_;
     my ($first_digit, $last_digit);
 
+    # Find first digit
     my $min_index = length($line);
     foreach my $digit (keys %$digit_values) {
         my $index = index($line, $digit);
@@ -17,6 +25,7 @@ sub find_digits {
         }
     }
 
+    # Find last digit
     my $max_index = -1;
     foreach my $digit (keys %$digit_values) {
         my $index = rindex($line, $digit);
@@ -26,9 +35,7 @@ sub find_digits {
         }
     }
 
-    if (!defined $last_digit) {
-        $last_digit = $first_digit;
-    }
+    $last_digit //= $first_digit;
 
     return ($first_digit, $last_digit);
 }
@@ -36,11 +43,6 @@ sub find_digits {
 my $file_dir = File::Spec->catdir('input');
 my $filename = File::Spec->catfile($file_dir, '2023_day1.txt');
 open my $fh, '<', $filename;
-
-my %digit_values = (
-    1   => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9,
-    one => 1, two => 2, three => 3, four => 4, five => 5, six => 6, seven => 7, eight => 8, nine => 9
-);
 
 my $sum = 0;
 while (my $line = <$fh>) {
