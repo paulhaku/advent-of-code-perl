@@ -13,9 +13,8 @@ sub get_power {
     $line =~ /^Game \d+?: (.+)$/;
     my @sets = split('; ', $1);
 
-    my $max_red = 0;
-    my $max_blue = 0;
-    my $max_green = 0;
+    my ($max_red, $max_blue, $max_green) = (0, 0, 0);
+
     foreach my $set (@sets) {
         my ($num_red) = $set =~ /(\d+) red/;
         my ($num_blue) = $set =~ /(\d+) blue/;
@@ -23,15 +22,10 @@ sub get_power {
         $num_red //= 0;
         $num_blue //= 0;
         $num_green //= 0;
-        if ($num_red > $max_red) {
-            $max_red = $num_red;
-        }
-        if ($num_blue > $max_blue) {
-            $max_blue = $num_blue;
-        }
-        if ($num_green > $max_green) {
-            $max_green = $num_green;
-        }
+
+        $max_red = $num_red if $num_red > $max_red;
+        $max_blue = $num_blue if $num_blue > $max_blue;
+        $max_green = $num_green if $num_green > $max_green;
     }
     return $max_red * $max_blue * $max_green;
 }
