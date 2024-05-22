@@ -20,4 +20,5 @@ while (my $line = <$fh>) {
     $sum += "${first_digit}${last_digit}";
 }
 
+close $fh;
 print $sum;
