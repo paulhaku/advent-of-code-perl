@@ -36,39 +36,33 @@ for (my $i = 0; $i < @grid; $i++) {
 
         for my $di (-1 .. 1) {
             for my $dj (-1 .. 1) {
-                next if $di == 0 && $dj == 0; # skip current character
+                next if $di == 0 && $dj == 0;  # Skip current character
                 my ($adjacent_i, $adjacent_j) = ($i + $di, $j + $dj);
-                # check if out of bounds
+
+                # Check if out of bounds
                 next if $adjacent_i < 0 || $adjacent_i > $#grid;
-                next if $adjacent_j < 0 || $adjacent_j > (length($line) - 1);
+                next if $adjacent_j < 0 || $adjacent_j >= length($line);
 
                 my $adjacent_character = substr($grid[$adjacent_i], $adjacent_j, 1);
 
-                # if it's not a period or a number, it is a special character
+                # Skip if not a special character (anything that isn't a period or number)
                 next unless is_special_character($adjacent_character);
 
-                # go back in the current line until we find the start of the number
-                my $current_char = $char;
-                my $current_char_j = $j;
-                while ($current_char =~ /^\d$/) {
-                    $current_char_j -= 1;
-                    $current_char = substr($line, $current_char_j, 1);
-                }
-                # since current char is now not a number, go forward once to find the number again
-                $current_char_j += 1;
+                # Find the start of the number
+                my $start_j = $j;
+                $start_j-- while $start_j >= 0 && substr($line, $start_j, 1) =~ /^\d$/;
+                $start_j++;
 
-                my $number = substr($line, $current_char_j, 1);
-                $current_char = $number;
-                while ($current_char =~ /^\d$/) {
-                    $current_char_j += 1;
-                    $current_char = substr($line, $current_char_j, 1);
-                    if ($current_char =~ /^\d$/) {
-                        $number = $number . $current_char;
-                    }
+                # Extract the number
+                my $number = '';
+                while ($start_j < length($line) && substr($line, $start_j, 1) =~ /^\d$/) {
+                    $number .= substr($line, $start_j, 1);
+                    $start_j++;
                 }
+
                 $sum += $number;
-                # skip ahead so we don't check this same number again
-                $j = $current_char_j - 1;
+                # Skip ahead so we don't check this same number again
+                $j = $start_j - 1;
             }
         }
     }
