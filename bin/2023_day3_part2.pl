@@ -31,9 +31,7 @@ sub is_gear {
     return $char eq '*';
 }
 
-my $gears = {
-
-};
+my $gears = {};
 
 for (my $i = 0; $i < @grid; $i++) {
     my $line = $grid[$i];
@@ -44,7 +42,7 @@ for (my $i = 0; $i < @grid; $i++) {
 
         for my $di (-1 .. 1) {
             for my $dj (-1 .. 1) {
-                next if $di == 0 && $dj == 0;  # Skip current character
+                next if $di == 0 && $dj == 0; # Skip current character
                 my ($adjacent_i, $adjacent_j) = ($i + $di, $j + $dj);
 
                 # Check if out of bounds
@@ -67,7 +65,7 @@ for (my $i = 0; $i < @grid; $i++) {
                     $number .= substr($line, $start_j, 1);
                     $start_j++;
                 }
-                
+
                 # Skip ahead so we don't check this same number again
                 $j = $start_j - 1;
 
