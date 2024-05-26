@@ -14,14 +14,8 @@ foreach my $line (@lines) {
     my @winning_numbers = split(/\s+/, $1);
     my @numbers = split(/\s+/, $2);
     foreach my $number (@numbers) {
-
         next unless grep(/^$number$/, @winning_numbers);
-        if ($points == 0) {
-            $points = 1;
-        }
-        else {
-            $points *= 2;
-        }
+        $points = $points == 0 ? 1 : $points * 2;
     }
     $total_points += $points;
 }
