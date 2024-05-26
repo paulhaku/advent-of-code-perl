@@ -21,7 +21,6 @@ sub get_num_wins {
     return $num_wins;
 }
 
-my @card_copies = ();
 my $cards_by_id = {};
 
 while (my $line = <$fh>) {
