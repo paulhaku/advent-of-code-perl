@@ -2,7 +2,9 @@
 use strict;
 use warnings;
 use autodie;
-use File::Spec;
+use FileHandler qw(get_file_lines);
+
+my @lines = @{get_file_lines('2023_day1.txt')};
 
 # Word representations
 my %digit_values = (
@@ -40,16 +42,10 @@ sub find_digits {
     return ($first_digit, $last_digit);
 }
 
-my $file_dir = File::Spec->catdir('input');
-my $filename = File::Spec->catfile($file_dir, '2023_day1.txt');
-open my $fh, '<', $filename;
-
 my $sum = 0;
-while (my $line = <$fh>) {
-    chomp $line;
+foreach my $line (@lines) {
     my ($first_digit, $last_digit) = find_digits($line, \%digit_values);
     $sum += "${first_digit}${last_digit}";
 }
 
-close $fh;
 print $sum, "\n";

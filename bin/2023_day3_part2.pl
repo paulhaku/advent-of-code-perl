@@ -2,19 +2,16 @@
 use strict;
 use warnings FATAL => 'all';
 use autodie;
-use File::Spec;
+use FileHandler qw(get_file_lines);
 
-my $file_dir = File::Spec->catdir('input');
-my $file_name = File::Spec->catfile($file_dir, '2023_day3.txt');
-open my $fh, '<', $file_name;
+my @lines = @{get_file_lines('2023_day3.txt')};
 
 # We need to look ahead, so store every line in a list
 my @grid = ();
-while (my $line = <$fh>) {
+foreach my $line (@lines) {
     chomp $line;
     push(@grid, $line);
 }
-close $fh;
 
 sub is_special_character {
     my $char = shift;

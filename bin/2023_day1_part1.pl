@@ -2,16 +2,12 @@
 use strict;
 use warnings FATAL => 'all';
 use autodie;
-use File::Spec;
+use FileHandler qw(get_file_lines);
 
-my $file_dir = File::Spec->catdir('input');
-my $filename = File::Spec->catfile($file_dir, '2023_day1.txt');
-open my $fh, "<", $filename;
+my @lines = @{get_file_lines('2023_day1.txt')};
 
 my $sum = 0;
-while (my $line = <$fh>) {
-    chomp $line;
-
+foreach my $line (@lines) {
     # extract first and last digit
     my ($first_digit) = $line =~ /(\d)/;
     my ($last_digit) = $line =~ /(\d)(?=\D*$)/;
@@ -22,5 +18,4 @@ while (my $line = <$fh>) {
     $sum += "${first_digit}${last_digit}";
 }
 
-close $fh;
 print $sum;

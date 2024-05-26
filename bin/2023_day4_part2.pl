@@ -3,10 +3,9 @@ use strict;
 use warnings FATAL => 'all';
 use File::Spec;
 use autodie;
+use FileHandler qw(get_file_lines);
 
-my $file_dir = File::Spec->catdir('input');
-my $file_name = File::Spec->catfile($file_dir, '2023_day4.txt');
-open my $fh, '<', $file_name;
+my @lines = @{get_file_lines('2023_day4.txt')};
 
 sub get_num_wins {
     my ($winning_numbers_ref, $numbers_ref) = @_;
@@ -23,7 +22,7 @@ sub get_num_wins {
 
 my $cards_by_id = {};
 
-while (my $line = <$fh>) {
+foreach my $line (@lines) {
     chomp $line;
     $line =~ /(\d+):\s+(.+?) \| (.+)/;
     my $id = $1;
@@ -33,11 +32,10 @@ while (my $line = <$fh>) {
     $cards_by_id->{$id}->{"numbers"} = \@numbers;
     $cards_by_id->{$id}->{"num_copies"} = 1;
 }
-close $fh;
 
 my $total_scratchcards = 0;
 
-foreach my $id (sort { $a <=> $b } keys %$cards_by_id) {
+foreach my $id (sort {$a <=> $b} keys %$cards_by_id) {
     my @winning_numbers = @{$cards_by_id->{$id}->{"winning_numbers"}};
     my @numbers = @{$cards_by_id->{$id}->{"numbers"}};
     my $num_wins = get_num_wins(\@winning_numbers, \@numbers);

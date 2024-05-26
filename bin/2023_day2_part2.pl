@@ -2,10 +2,9 @@
 use strict;
 use warnings FATAL => 'all';
 use File::Spec;
+use FileHandler qw(get_file_lines);
 
-my $file_dir = File::Spec->catdir('input');
-my $filename = File::Spec->catfile($file_dir, '2023_day2.txt');
-open my $fh, "<", $filename;
+my @lines = @{get_file_lines('2023_day2.txt')};
 
 sub get_power {
     my $line = shift;
@@ -31,10 +30,8 @@ sub get_power {
 }
 
 my $power_sum = 0;
-while (my $line = <$fh>) {
-    chomp $line;
+foreach my $line (@lines) {
     $power_sum += get_power($line);
 }
 
 print $power_sum, "\n";
-close $fh;

@@ -2,19 +2,9 @@
 use strict;
 use warnings FATAL => 'all';
 use autodie;
-use File::Spec;
+use FileHandler qw(get_file_lines);
 
-my $file_dir = File::Spec->catdir('input');
-my $file_name = File::Spec->catfile($file_dir, '2023_day3.txt');
-open my $fh, '<', $file_name;
-
-# We need to look ahead, so store every line in a list
-my @grid = ();
-while (my $line = <$fh>) {
-    chomp $line;
-    push(@grid, $line);
-}
-close $fh;
+my @lines = @{get_file_lines('2023_day3.txt')};
 
 sub is_special_character {
     my $char = shift;
@@ -27,8 +17,8 @@ sub is_numeric {
 }
 
 my $sum = 0;
-for (my $i = 0; $i < @grid; $i++) {
-    my $line = $grid[$i];
+for (my $i = 0; $i < @lines; $i++) {
+    my $line = $lines[$i];
     for (my $j = 0; $j < length($line); $j++) {
         my $char = substr($line, $j, 1);
 
@@ -40,10 +30,10 @@ for (my $i = 0; $i < @grid; $i++) {
                 my ($adjacent_i, $adjacent_j) = ($i + $di, $j + $dj);
 
                 # Check if out of bounds
-                next if $adjacent_i < 0 || $adjacent_i > $#grid;
+                next if $adjacent_i < 0 || $adjacent_i > $#lines;
                 next if $adjacent_j < 0 || $adjacent_j >= length($line);
 
-                my $adjacent_character = substr($grid[$adjacent_i], $adjacent_j, 1);
+                my $adjacent_character = substr($lines[$adjacent_i], $adjacent_j, 1);
 
                 # Skip if not a special character (anything that isn't a period or number)
                 next unless is_special_character($adjacent_character);

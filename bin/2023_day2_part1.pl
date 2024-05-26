@@ -1,11 +1,9 @@
 #!/usr/bin/perl
 use strict;
 use warnings FATAL => 'all';
-use File::Spec;
+use FileHandler qw(get_file_lines);
 
-my $file_dir = File::Spec->catdir('input');
-my $filename = File::Spec->catfile($file_dir, '2023_day2.txt');
-open my $fh, "<", $filename;
+my @lines = @{get_file_lines('2023_day2.txt')};
 
 use constant {
     MAX_RED   => 12,
@@ -37,8 +35,7 @@ sub is_possible {
 }
 
 my $id_sum = 0;
-while (my $line = <$fh>) {
-    chomp $line;
+foreach my $line (@lines) {
     my ($game_id) = $line =~ /^Game (\d+?): .+$/;
     if (is_possible($line)) {
         $id_sum += $game_id;
@@ -46,4 +43,3 @@ while (my $line = <$fh>) {
 }
 
 print $id_sum, "\n";
-close $fh;

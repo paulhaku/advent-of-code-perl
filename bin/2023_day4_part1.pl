@@ -3,14 +3,12 @@ use strict;
 use warnings FATAL => 'all';
 use File::Spec;
 use autodie;
+use FileHandler qw(get_file_lines);
 
-my $file_dir = File::Spec->catdir('input');
-my $file_name = File::Spec->catfile($file_dir, '2023_day4.txt');
-open my $fh, '<', $file_name;
+my @lines = @{get_file_lines('2023_day4.txt')};
 
 my $total_points = 0;
-while (my $line = <$fh>) {
-    chomp $line;
+foreach my $line (@lines) {
     my $points = 0;
     $line =~ /\d+:\s+(.+?) \| (.+)/;
     my @winning_numbers = split(/\s+/, $1);
@@ -27,5 +25,5 @@ while (my $line = <$fh>) {
     }
     $total_points += $points;
 }
-close $fh;
+
 print $total_points, "\n";
